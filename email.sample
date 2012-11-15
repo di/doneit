@@ -1,0 +1,51 @@
+From developer.name@example.com  Thu Nov 15 14:55:42 2012
+Return-Path: <developer.name@example.com>
+X-Original-To: doneit@doneit.cs.drexel.edu
+Delivered-To: doneit@doneit.cs.drexel.edu
+Received: from mail-gg0-f179.example.com (mail-gg0-f179.example.com [200.00.000.009])
+	by doneit.cs.drexel.edu (Postfix) with ESMTPS id 7C43B2032E
+	for <doneit@doneit.cs.drexel.edu>; Thu, 15 Nov 2012 14:55:42 -0500 (EST)
+Received: by mail-gg0-f179.example.com with SMTP id y6so381141ggc.38
+        for <doneit@doneit.cs.drexel.edu>; Thu, 15 Nov 2012 11:55:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=example.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :content-type;
+        bh=RiikwOoAi3vXHjPDL7ddYVCSL/Oha0sfEcKZogYr15Y=;
+        b=gHRbWLSza9tg9Feo2I3ipjtuyj9EMZAt68n6XbgchI2+5UROnGRKNxNBONup4j6ZM3
+         wIcz1T9yPnYgdxIS0eReSEIXV/THIhDPO7yP+fvKjOfBePHXXp6U0glU14u4FI3prPJg
+         NWxdbqv1nU4fwGRFIZr8jVyu+BrfEmLlTSawDcbHYAjKOwRNW0Qe13T+QpY7aYRoiIoD
+         YG8iW+0qssx1Gfj06MTS/RpzbvvYAelWs358w/iDxxgqP/xnJaz6HRMWhstR8500bN1R
+         7O8K6+Y4MxS4phnRumTv9g1x7D/bCxpPJioVoDvN2bmdq1f04hqOrwO36DtS/A2g3M8R
+         u/Kg==
+Received: by 10.000.000.009 with SMTP id l29mr2087345yhm.44.1353009342225;
+ Thu, 15 Nov 2012 11:55:42 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.000.000.08 with HTTP; Thu, 15 Nov 2012 11:55:22 -0800 (PST)
+In-Reply-To: <CACHw_mQQT56EdRBh0rL-Yed1EBvRKR7pkJc7XqVV47hmnyXRzQ@mail.example.com>
+References: <20121113050555.AF543202D3@doneit.cs.drexel.edu>
+ <CACHw_mR4hpFDfXEcdb1B1+V9PE4p7XaorGRf+edgbuhARSLqSQ@mail.example.com>
+ <CACHw_mQsOJx_WVGza9EvyGq4JA0RtVcBxVGGdZRjHcRT_6mSJw@mail.example.com>
+ <CACHw_mT56VzZEs3+Jr-dHqH9LHbLmFQV-fOvCbz=F==_ncex9A@mail.example.com>
+ <CACHw_mRff7zHkhKagP1nzOOhEJRG6j4j=3hnCpaJ+jASpHBPBg@mail.example.com>
+ <CACHw_mTffQkhihRHZ2+=ZhMKgzLJuECaXcXD4uNmPgfNLJLbkQ@mail.example.com>
+ <CACHw_mQZyAOLvCzU4ko3S7Nbuin250U=Kp+ofamLV31T9Cu3hw@mail.example.com>
+ <CACHw_mQY1MfH6gcL0eDYYN8MBs1V314c5vzE8-CotP02h3os6w@mail.example.com>
+ <CACHw_mTP1cSVSEk1QCzUoyuq1EbBBGjCQEpcwTv3a1MDEoL_Xg@mail.example.com>
+ <CACHw_mTQB7f2C8dQfTigLzWbu-UbhH_dDCXnkVzoDeDJVROUDg@mail.example.com>
+ <CACHw_mQhG54TXpD41bWd8ERKOYHYe=96MO-ZuCZbmVKzxr+2qg@mail.example.com>
+ <CACHw_mS9bFSQN4gPvC_eteaHh1a0VchKGOhPE0nXpymxVT3Hpw@mail.example.com>
+ <CACHw_mRoY-Yz=Wcqvdk_EE2PscRPeoTo8hxVZmFC8K2iyij=rg@mail.example.com>
+ <CACHw_mSx9rsysG3hEh0kvTaKTE37YdPE+8Wwo2eUD3KTL=ZPpA@mail.example.com>
+ <CACHw_mT7CcpXsm+wuN-LEThqqqhoKP-6xoP5afsPHFfg+nY2kw@mail.example.com>
+ <CACHw_mS8Vs+R=BymAYVSKs=qdPuxVHSsfaS14-WJt0fvOF8+vA@mail.example.com> <CACHw_mQQT56EdRBh0rL-Yed1EBvRKR7pkJc7XqVV47hmnyXRzQ@mail.example.com>
+From: Developer Name <developer.name@example.com>
+Date: Thu, 15 Nov 2012 11:55:22 -0800
+Message-ID: <CACHw_mQ_OE=_wkz7osdnaTkzQLXKnCXGHkV=v3CF1_vt+PKbPg@mail.example.com>
+Subject: my first doneit email
+To: doneit <doneit@doneit.cs.drexel.edu>
+Content-Type: text/plain; charset=ISO-8859-1
+
+This is a sample email to be stored. It can be used as follows:
+
+$ cat email.sample | ./incoming.py
