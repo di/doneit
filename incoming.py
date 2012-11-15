@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
-f = open('/var/log/doneit.log', 'w')
-f.write("Got email")
-f.close()
+import sys, doneit, email
+
+email = email.message_from_string(sys.stdin.read())
+doneit.log("Got email from %s" % email['From'])
+payload = email.get_payload()

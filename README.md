@@ -43,5 +43,9 @@ Then, we need to symlink the `incoming.py` file to this location:
 
     $ sudo ln -s /doneit/incoming.py /usr/bin/doneit_incoming
 
+And then update Postfix's aliases:
+
+    $ sudo postalias /etc/aliases
+
 ## Logging
 Logs are stored at `/var/log/doneit.log`
