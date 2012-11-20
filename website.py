@@ -1,18 +1,16 @@
 #!/usr/bin/python
 
-import web, sys, time
+import sys, time, json, bottle
+from bottle import route, run, request, abort
 from daemon import Daemon
 
-class hello:
-    def GET(self):
-        return 'Hello, world!'
+@route('/', method='GET')
+def get_homepage():
+    return 'Hello, world!'
 
 class MyDaemon(Daemon):
     def run(self):
-        sys.argv[1] = '80'
-        urls = ("/.*", "hello")
-        app = web.application(urls, globals())
-        app.run()
+        run(host='doneit.cs.drexel.edu', port=80)
 
 if __name__ == "__main__":
     daemon = MyDaemon('/tmp/doneit.pid')
