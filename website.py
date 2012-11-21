@@ -31,9 +31,8 @@ def get_projects():
 def get_project(id):
     entity = doneit.get_by_id('projects', id)
     entity['admin'] = doneit.get_by_id("users", entity['admin_id'])
-    entity['done'] = doneit.get_tasks("done", entity['_id'])
-    entity['todo'] = doneit.get_tasks("todo", entity['_id'])
-    entity['block'] = doneit.get_tasks("block", entity['_id'])
+    for task_type in ['done', 'todo', 'block', 'doing']:
+        entity[task_type] = doneit.get_tasks(task_type, entity['_id'])
     return template('project', project=entity)
 
 class MyDaemon(Daemon):

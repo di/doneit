@@ -2,7 +2,7 @@
 <h1>{{project['name']}}</h1>
 <p>Description: {{project['description']}}</p>
 <p>Administrator: <a href="/users/{{project['admin']['_id']}}">{{project['admin']['name']}}</a></p>
-%for type in ['done', 'todo', 'block']:
+%for type in ['todo', 'doing', 'block', 'done']:
     <p>{{type.title()}}:</p>
     <ul>
     %for t in project[type]:
