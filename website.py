@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 import doneit
-import sys, time, bottle, pymongo, bson
-from bottle import route, run, request, abort, template
+import sys, time, bottle, pymongo, json, bson
+from bottle import route, run, request, abort, template, redirect
 from bson.objectid import ObjectId
 from daemon import Daemon
 
@@ -16,6 +16,20 @@ def get_homepage():
 def get_users():
     entity = doneit.get_all('users')
     return template('users', users=entity)
+
+@route('/users/add', method='GET')
+def add_users():
+    entity = doneit.get_all('projects')
+    return template('users_add', projects=entity)
+
+@route('/users/add', method='POST')
+def add_users():
+    entity = dict()
+    for field in ['name', 'email', 'password', 'daily-digest']:
+        entity[field] = request.forms.get(field)
+    entity['project'] = ObjectId(request.forms.get('project'))
+    _id = doneit.save('users', entity)
+    redirect("/users/%s" % (_id))
 
 @route('/users/:id', method='GET')
 def get_user(id):

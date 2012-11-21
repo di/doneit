@@ -15,6 +15,9 @@ logger.setLevel(logging.INFO)
 
 db = Connection('localhost', 27017).doneit
 
+def save(collection, entity):
+    return db[collection].save(entity)
+
 def get_all(collection):
     return db[collection].find()
 
