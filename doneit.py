@@ -18,6 +18,9 @@ db = Connection('localhost', 27017).doneit
 def save(collection, entity):
     return db[collection].save(entity)
 
+def get_project_members(project_id):
+    return db['users'].find({"project_id": ObjectId(project_id)})
+
 def get_all(collection):
     return db[collection].find()
 
@@ -25,8 +28,7 @@ def get_by_id(collection, _id):
     return db[collection].find_one({"_id": ObjectId(_id)})
 
 def get_tasks(task_type, project_id):
-    tasks = db['tasks'].find({"project_id": ObjectId(project_id), "type": task_type})
-    return tasks
+    return db['tasks'].find({"project_id": ObjectId(project_id), "type": task_type})
 
 # Log a message
 def log(msg):

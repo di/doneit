@@ -27,7 +27,7 @@ def add_users():
     entity = dict()
     for field in ['name', 'email', 'password', 'daily-digest']:
         entity[field] = request.forms.get(field)
-    entity['project'] = ObjectId(request.forms.get('project'))
+    entity['project_id'] = ObjectId(request.forms.get('project'))
     _id = doneit.save('users', entity)
     redirect("/users/%s" % (_id))
 
