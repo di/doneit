@@ -10,24 +10,24 @@ bottle.TEMPLATE_PATH.insert(0,'/doneit/views/')
 
 @route('/', method='GET')
 def get_homepage():
-    if doneit.check_login(request):
-        return template('home')
-    else:
-        redirect("/login?ret=/")
+    return template('home')
 
 @route('/login', method='GET')
 def login():
-    return template('login')
+    failed = request.query.failed == "true"
+    return template('login', failed=failed)
 
 @route('/login', method='POST')
 def login():
-    if doneit.login(request.forms.get('email'), request.forms.get('password')):
+    if doneit.check_login(request):
+        redirect(request.query.ret or "/")
+    elif doneit.login(request.forms.get('email'), request.forms.get('password')):
         user_id = doneit.get_id_by_email(request.forms.get('email'))
         response.set_cookie("_id", str(user_id))
         response.set_cookie("session", doneit.new_session(str(user_id)))
-        redirect("//%s" % (request.query.ret))
+        redirect(request.query.ret or "/")
     else:
-        redirect("/login?failed=true")
+        redirect("/login?failed=true&ret=%s" % (request.query.ret))
 
 @route('/users', method='GET')
 def get_users():
@@ -36,17 +36,23 @@ def get_users():
 
 @route('/users/add', method='GET')
 def add_users():
-    entity = doneit.get_all('projects')
-    return template('users_add', projects=entity)
+    if doneit.check_login(request):
+        entity = doneit.get_all('projects')
+        return template('users_add', projects=entity)
+    else:
+        redirect("/login?ret=%s" % (request.path))
 
 @route('/users/add', method='POST')
 def add_users():
-    entity = dict()
-    for field in ['name', 'email', 'password', 'daily-digest']:
-        entity[field] = request.forms.get(field)
-    entity['project_id'] = ObjectId(request.forms.get('project'))
-    _id = doneit.save('users', entity)
-    redirect("/users/%s" % (_id))
+    if doneit.check_login(request):
+        entity = dict()
+        for field in ['name', 'email', 'password', 'daily-digest']:
+            entity[field] = request.forms.get(field)
+        entity['project_id'] = ObjectId(request.forms.get('project'))
+        _id = doneit.save('users', entity)
+        redirect("/users/%s" % (_id))
+    else:
+        redirect("/login?ret=%s" % (request.path))
 
 @route('/users/:id', method='GET')
 def get_user(id):

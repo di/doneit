@@ -23,7 +23,8 @@ def check_login(request):
     return session and _id and _id in sessions.keys() and sessions[_id] == session
 
 def login(email, password):
-    return db['users'].find_one({"email": email})['password'] == password
+    user = db['users'].find_one({"email": email})
+    return user != None and user['password'] == password
 
 def new_session(user_id):
     session_id = base64.b64encode(OpenSSL.rand.bytes(16))

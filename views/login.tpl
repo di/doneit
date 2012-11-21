@@ -1,4 +1,7 @@
 <h1>Login:</h1>
+%if failed:
+    <i>Login failed</i>
+%end
 <form method="POST">
 <label for="email">Email:</label>
 <input type="text" name="email"><br>
