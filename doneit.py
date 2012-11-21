@@ -3,6 +3,7 @@
 # Utility functions for the Doneit project
 
 import logging
+import base64, OpenSSL
 from pymongo import Connection
 from bson.objectid import ObjectId
 
@@ -14,9 +15,26 @@ logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
 
 db = Connection('localhost', 27017).doneit
+sessions = dict()
+
+def check_login(request):
+    session = request.get_cookie("session")
+    _id = request.get_cookie("_id")
+    return session and _id and _id in sessions.keys() and sessions[_id] == session
+
+def login(email, password):
+    return db['users'].find_one({"email": email})['password'] == password
+
+def new_session(user_id):
+    session_id = base64.b64encode(OpenSSL.rand.bytes(16))
+    sessions[user_id] = session_id
+    return session_id
 
 def save(collection, entity):
     return db[collection].save(entity)
+
+def get_id_by_email(email):
+    return db['users'].find_one({"email": email})['_id']
 
 def get_project_members(project_id):
     return db['users'].find({"project_id": ObjectId(project_id)})

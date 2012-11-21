@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
 import doneit
-import sys, time, bottle, pymongo, json, bson
-from bottle import route, run, request, abort, template, redirect
+import sys, time, bottle, pymongo, json, bson, urllib
+from bottle import route, run, request, response, abort, template, redirect
 from bson.objectid import ObjectId
 from daemon import Daemon
 
@@ -10,7 +10,24 @@ bottle.TEMPLATE_PATH.insert(0,'/doneit/views/')
 
 @route('/', method='GET')
 def get_homepage():
-    return template('home')
+    if doneit.check_login(request):
+        return template('home')
+    else:
+        redirect("/login?ret=/")
+
+@route('/login', method='GET')
+def login():
+    return template('login')
+
+@route('/login', method='POST')
+def login():
+    if doneit.login(request.forms.get('email'), request.forms.get('password')):
+        user_id = doneit.get_id_by_email(request.forms.get('email'))
+        response.set_cookie("_id", str(user_id))
+        response.set_cookie("session", doneit.new_session(str(user_id)))
+        redirect("//%s" % (request.query.ret))
+    else:
+        redirect("/login?failed=true")
 
 @route('/users', method='GET')
 def get_users():
