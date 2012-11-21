@@ -2,24 +2,10 @@
 Daily Task Management &amp; Daily Digest System
 
 # Required libraries
-## bottle
-Bottle is a micro-framework for Python:
-
-    $ sudo easy_install bottle
-
-## pymongo
-Pymongo is the MongoDB driver for Python:
-
-    $ sudo easy_install pymongo
-
-## MongoDB
-MongoDB is the database for Doneit:
-
-    $ sudo apt-get install mongodb
+## web.py
+    $ sudo easy_install web.py
 
 ## Postfix
-Postfix is the email server used by Doneit:
-
     $ sudo apt-get install postfix
 
 # Getting Started
@@ -30,6 +16,15 @@ To get the source, run the following:
     $ sudo git clone git://github.com/di/doneit.git
 
 We now have a directory at `/doneit` where the application resides.
+
+## Importing the database
+To build the database, from the `/doneit/` directory, run:
+
+    $ mongorestore
+
+To dump the database (to commit to git), run:
+
+    $ mongodump
 
 ## Starting the Daemon
 The daemon allows the web service to run indefinitely. To start it, in the
@@ -62,4 +57,4 @@ And then update Postfix's aliases:
     $ sudo postalias /etc/aliases
 
 ## Logging
-Logs are logged at `/var/log/doneit.log`
+Logs are stored at `/var/log/doneit.log`
