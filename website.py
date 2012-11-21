@@ -12,6 +12,16 @@ bottle.TEMPLATE_PATH.insert(0,'/doneit/views/')
 def get_homepage():
     return template('home')
 
+@route('/users', method='GET')
+def get_users():
+    entity = doneit.db['users'].find()
+    return template('users', users=entity)
+
+@route('/users/:id', method='GET')
+def get_user(id):
+    entity = doneit.db['users'].find_one({"_id": ObjectId(id)})
+    return template('user', user=entity)
+
 @route('/projects', method='GET')
 def get_projects():
     entity = doneit.db['projects'].find()
