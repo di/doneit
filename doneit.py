@@ -15,6 +15,9 @@ logger.setLevel(logging.INFO)
 
 db = Connection('localhost', 27017).doneit
 
+def get_all(collection):
+    return db[collection].find()
+
 def get_by_id(collection, _id):
     return db[collection].find_one({"_id": ObjectId(_id)})
 

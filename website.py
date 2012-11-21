@@ -14,22 +14,22 @@ def get_homepage():
 
 @route('/users', method='GET')
 def get_users():
-    entity = doneit.db['users'].find()
+    entity = doneit.get_all('users')
     return template('users', users=entity)
 
 @route('/users/:id', method='GET')
 def get_user(id):
-    entity = doneit.db['users'].find_one({"_id": ObjectId(id)})
+    entity = doneit.get_by_id('users', id)
     return template('user', user=entity)
 
 @route('/projects', method='GET')
 def get_projects():
-    entity = doneit.db['projects'].find()
+    entity = doneit.get_all['projects']
     return template('projects', projects=entity)
 
 @route('/projects/:id', method='GET')
 def get_project(id):
-    entity = doneit.db['projects'].find_one({"_id": ObjectId(id)})
+    entity = doneit.get_by_id('projects', id)
     entity['admin'] = doneit.get_by_id("users", entity['admin_id'])
     entity['done'] = doneit.get_tasks("done", entity['_id'])
     entity['todo'] = doneit.get_tasks("todo", entity['_id'])
