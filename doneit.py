@@ -23,7 +23,7 @@ def check(request):
     return session and _id and _id in sessions.keys() and sessions[_id] == session
 
 def login(email, password):
-    user = db['users'].find_one({"email": email})
+    user = get_user_by_email(email)
     return user != None and user['password'] == password
 
 def logout(request):
@@ -35,11 +35,17 @@ def new_session(user_id):
     sessions[user_id] = session_id
     return session_id
 
+def add_user(new_user):
+    user = get_user_by_email(new_user['email'])
+    if user == None:
+        return save('users', new_user)
+    return user['_id']
+
 def save(collection, entity):
     return db[collection].save(entity)
 
-def get_id_by_email(email):
-    return db['users'].find_one({"email": email})['_id']
+def get_user_by_email(email):
+    return db['users'].find_one({"email": email})
 
 def get_project_members(project_id):
     return db['users'].find({"project_id": ObjectId(project_id)})

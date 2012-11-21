@@ -23,7 +23,7 @@ def login():
     if check(request):
         redirect(request.query.ret or "/")
     if doneit.login(request.forms.get('email'), request.forms.get('password')):
-        user_id = doneit.get_id_by_email(request.forms.get('email'))
+        user_id = doneit.get_user_by_email(request.forms.get('email'))['_id']
         response.set_cookie("_id", str(user_id))
         response.set_cookie("session", doneit.new_session(str(user_id)))
         redirect(request.query.ret or "/")
@@ -54,7 +54,7 @@ def add_users():
         for field in ['name', 'email', 'password', 'daily-digest']:
             entity[field] = request.forms.get(field)
         entity['project_id'] = ObjectId(request.forms.get('project'))
-        _id = doneit.save('users', entity)
+        _id = doneit.add_user(entity)
         redirect("/users/%s" % (_id))
     else:
         redirect("/login?ret=%s" % (request.path))
