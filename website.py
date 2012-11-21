@@ -24,7 +24,7 @@ def get_user(id):
 
 @route('/projects', method='GET')
 def get_projects():
-    entity = doneit.get_all['projects']
+    entity = doneit.get_all('projects')
     return template('projects', projects=entity)
 
 @route('/projects/:id', method='GET')
