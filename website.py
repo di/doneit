@@ -17,7 +17,7 @@ def get_tasks(task_type, project_id):
 
 @route('/', method='GET')
 def get_homepage():
-    return 'Hello, world!'
+    return template('home')
 
 @route('/projects', method='GET')
 def get_projects():
