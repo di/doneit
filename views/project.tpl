@@ -1,7 +1,7 @@
 %import doneit
 <h1>{{project['name']}}</h1>
 <p>Description: {{project['description']}}</p>
-<p>Administrator: {{project['admin']['name']}}</p>
+<p>Administrator: <a href="/users/{{project['admin']['_id']}}">{{project['admin']['name']}}</a></p>
 %for type in ['done', 'todo', 'block']:
     <p>{{type.title()}}:</p>
     <ul>
