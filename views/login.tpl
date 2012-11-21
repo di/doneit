@@ -10,4 +10,5 @@
 <input type="submit" value="Submit">
 </form>
 <p><a href="/">< Back to home</a>
-%rebase layout title='Login'
+%title='Login'
+%rebase layout **locals()

@@ -18,4 +18,5 @@
 %end
 
 <p><a href="/projects">< Back to projects</a>
-%rebase layout title=project['name']
+%title=project['name']
+%rebase layout **locals()

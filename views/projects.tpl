@@ -5,4 +5,5 @@
 %end
 </ul>
 <p><a href="/">< Back to home</a>
-%rebase layout title='Current Projects'
+%title='Current Projects'
+%rebase layout **locals()

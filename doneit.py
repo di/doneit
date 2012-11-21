@@ -17,7 +17,7 @@ logger.setLevel(logging.INFO)
 db = Connection('localhost', 27017).doneit
 sessions = dict()
 
-def check_login(request):
+def check(request):
     session = request.get_cookie("session")
     _id = request.get_cookie("_id")
     return session and _id and _id in sessions.keys() and sessions[_id] == session
@@ -25,6 +25,10 @@ def check_login(request):
 def login(email, password):
     user = db['users'].find_one({"email": email})
     return user != None and user['password'] == password
+
+def logout(request):
+    if check(request):
+        del sessions[request.get_cookie("_id")]
 
 def new_session(user_id):
     session_id = base64.b64encode(OpenSSL.rand.bytes(16))

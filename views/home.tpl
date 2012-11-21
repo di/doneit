@@ -10,5 +10,5 @@
 <li><a href="/projects/add">Add a project</a></li>
 <li><a href="/tasks/add">Add a task</a></li>
 </li>
-
-%rebase layout title="Home"
+%title='Home'
+%rebase layout **locals()

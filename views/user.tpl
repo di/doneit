@@ -6,4 +6,5 @@
 <p>Current Project: <a href="/projects/{{user['project_id']}}">{{project['name']}}</a></p>
 
 <p><a href="/users">< Back to users</a>
-%rebase layout title=user['name']
+%title=user['name']
+%rebase layout **locals()
