@@ -41,6 +41,9 @@ def add_user(new_user):
         return save('users', new_user)
     return user['_id']
 
+def add_project(new_project):
+    return save('projects', new_project)
+
 def save(collection, entity):
     return db[collection].save(entity)
 

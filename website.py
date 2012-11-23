@@ -69,6 +69,25 @@ def get_projects():
     entity = doneit.get_all('projects')
     return template('projects', loggedin=check(request), projects=entity)
 
+@route('/projects/add', method='GET')
+def add_projects():
+    if check(request):
+        return template('projects_add', loggedin=check(request))
+    else:
+        redirect("/login?ret=%s" % (request.path))
+
+@route('/projects/add', method='POST')
+def add_projects():
+    if check(request):
+        entity = dict()
+        for field in ['name', 'description']:
+            entity[field] = request.forms.get(field)
+        entity['admin_id'] = request.get_cookie("_id")
+        _id = doneit.add_project(entity)
+        redirect("/projects/%s" % (_id))
+    else:
+        redirect("/login?ret=%s" % (request.path))
+
 @route('/projects/:id', method='GET')
 def get_project(id):
     entity = doneit.get_by_id('projects', id)
