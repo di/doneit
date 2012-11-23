@@ -35,6 +35,9 @@ def new_session(user_id):
     sessions[user_id] = session_id
     return session_id
 
+def add_task(new_task):
+    return save('tasks', new_task)
+
 def add_user(new_user):
     user = get_user_by_email(new_user['email'])
     if user == None:

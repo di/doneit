@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import doneit
-import sys, time, bottle, pymongo, json, bson, urllib
+import sys, time, bottle, pymongo, json, bson, urllib, datetime
 from doneit import check
 from bottle import route, run, request, response, abort, template, redirect
 from bson.objectid import ObjectId
@@ -33,6 +33,29 @@ def login():
 def logout():
     doneit.logout(request)
     redirect("/")
+
+@route('/tasks/add', method='GET')
+def add_tasks():
+    if check(request):
+        return template('tasks_add', loggedin=check(request))
+    else:
+        redirect("/login?ret=%s" % (request.path))
+
+@route('/tasks/add', method='POST')
+def add_tasks():
+    if check(request):
+        entity = dict()
+        user_id = request.get_cookie("_id")
+        project_id = doneit.get_by_id('users', user_id)["project_id"]
+        for field in ['type', 'comment']:
+            entity[field] = request.forms.get(field)
+        entity['user_id'] = user_id
+        entity['project_id'] = project_id
+        entity['date'] = datetime.datetime.utcnow()
+        _id = doneit.add_task(entity)
+        redirect("/projects/%s" % (project_id))
+    else:
+        redirect("/login?ret=%s" % (request.path))
 
 @route('/users', method='GET')
 def get_users():
