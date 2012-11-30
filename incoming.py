@@ -2,6 +2,9 @@
 
 import sys, doneit, email, re
 
+# this script reads an email from stdin. 
+# to test, use:
+# $ cat email.sample | ./incoming.py
 
 def parse_address_from_sender(sender):
     m = re.search('<([\w@\.]+)>', sender)
