@@ -46,6 +46,16 @@ Subject: my first doneit email
 To: doneit <doneit@doneit.cs.drexel.edu>
 Content-Type: text/plain; charset=ISO-8859-1
 
-This is a sample email to be stored. It can be used as follows:
+DOING: 
+* upate sample email to have some tasks
+* code to submit email tasks to doneit
 
-$ cat email.sample | ./incoming.py
+DONE: 
+* parse tasks from new email
+* push incoming.py to github
+
+BLOCK:
+* not sure how to send messages to services
+
+TODO: 
+* code to send digest emails
