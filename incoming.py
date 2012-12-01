@@ -1,16 +1,31 @@
 #!/usr/bin/python
 
-import sys, doneit, email, re
+import sys, email, re, datetime
+import doneit
 
 # this script reads an email from stdin. 
 # to test, use:
 # $ cat email.sample | ./incoming.py
 
-def parse_address_from_sender(sender):
-    m = re.search('<([\w@\.]+)>', sender)
-    return m.group(1)
+def get_user(email):
+    # extract email address from From field
+    sender = email['From']
+    doneit.log("Got email from %s" % sender)
 
-def parse_tasks_from_payload(payload):
+    m = re.search('<([\w@\.]+)>', sender)
+    sender_address = m.group(1)
+    user_id = doneit.get_user_by_email(sender_address)['_id']
+    return user_id
+
+def get_project(email):
+    # lookup from user id
+    user_id = get_user(email)
+    project_id = doneit.get_by_id('users', user_id)["project_id"]
+    return project_id
+
+def get_tasks(email):
+    # parse tasks out of the payload
+    payload = email.get_payload()
     tasks = []
 
     task_type = 'UNSPECIFIED'
@@ -29,13 +44,16 @@ def parse_tasks_from_payload(payload):
 
 
 email = email.message_from_string(sys.stdin.read())
-sender = email['From']
-payload = email.get_payload()
-doneit.log("Got email from %s" % sender)
 
-sender_address = parse_address_from_sender(sender)
-tasks = parse_tasks_from_payload(payload)
+entity = dict()
+entity['date'] = datetime.datetime.utcnow()
+entity['user_id'] = get_user(email)
+entity['project_id'] = get_project(email)
 
+tasks = get_tasks(email)
 for task in tasks:
-    doneit.log("Submit Task: %s, %s, %s" % (sender_address, task['type'], task['comment']))
+    for field in ['type', 'comment']:
+        entity[field] = task[field]
+    doneit.log("Submit Task: %d, %d, %s, %s" % (entity['user_id'], entity['project_id'], entity['type'], entity['comment']))
+    _id = doneit.add_task(entity)
 
