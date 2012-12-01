@@ -54,6 +54,6 @@ tasks = get_tasks(email)
 for task in tasks:
     for field in ['type', 'comment']:
         entity[field] = task[field]
-    doneit.log("Submit Task: %d, %d, %s, %s" % (entity['user_id'], entity['project_id'], entity['type'], entity['comment']))
+#    doneit.log("Submit Task: %s, %s, %s, %s" % (entity['user_id'], entity['project_id'], entity['type'], entity['comment']))
     _id = doneit.add_task(entity)
 
