@@ -1,7 +1,8 @@
 #!/usr/bin/python
 
 import doneit
-import sys, time, bottle, pymongo, json, bson, urllib, datetime
+import sys, time, bottle, pymongo, json, bson, urllib, datetime, pytz
+from dateutil.tz import tzlocal
 from doneit import check
 from bottle import route, run, request, response, abort, template, redirect
 from bson.objectid import ObjectId
@@ -115,13 +116,15 @@ def add_projects():
 def get_project(id):
     entity = doneit.get_by_id('projects', id)
     entity['admin'] = doneit.get_by_id("users", entity['admin_id'])
+    entity['date'] = datetime.datetime.now(tzlocal()).replace(hour=0,minute=0,second=0,microsecond=0).astimezone(pytz.utc) # midnight today
     for task_type in ['done', 'todo', 'block', 'doing']:
-        entity[task_type] = doneit.get_tasks(task_type, entity['_id'])
+        entity[task_type] = doneit.get_tasks(task_type, entity['_id'], entity['date'])
     return template('project', loggedin=check(request), project=entity)
 
 class MyDaemon(Daemon):
     def run(self):
         run(host='doneit.cs.drexel.edu', port=80, debug=True)
+#        run(host='localhost', port=5000, debug=True)
 
 if __name__ == "__main__":
     daemon = MyDaemon('/tmp/doneit.pid')

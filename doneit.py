@@ -62,8 +62,8 @@ def get_all(collection):
 def get_by_id(collection, _id):
     return db[collection].find_one({"_id": ObjectId(_id)})
 
-def get_tasks(task_type, project_id):
-    return db['tasks'].find({"project_id": ObjectId(project_id), "type": task_type})
+def get_tasks(task_type, project_id, date):
+    return db['tasks'].find({"project_id": ObjectId(project_id), "type": task_type, "date": {"$gte": date}})
 
 # Log a message
 def log(msg):

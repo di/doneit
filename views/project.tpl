@@ -7,6 +7,8 @@
     <a href="/users/{{user['_id']}}">{{user['name']}}</a>
 %end
 </p>
+<hr>
+<p>Project status as of <b>{{project['date'].strftime("%B %d, %Y (%A)")}}</b></p>
 %for type in ['todo', 'doing', 'block', 'done']:
     <b>{{type.title()}}:</b>
     <ul>
