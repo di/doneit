@@ -7,37 +7,43 @@ import doneit
 # to test, use:
 # $ cat email.sample | ./incoming.py
 
-def get_user(email):
+def get_user(message):
     # extract email address from From field
-    sender = email['From']
+    sender = message['From']
 
     m = re.search('<([\w@\.]+)>', sender)
     sender_address = m.group(1)
     user = doneit.get_user_by_email(sender_address)
     return user
 
-def get_project(email):
+def get_project(message):
     # lookup from user id
-    user = get_user(email)
+    user = get_user(message)
     project = doneit.get_by_id('projects', user['project_id'])
     return project
 
-def get_tasks(email):
+def get_tasks(message):
     # parse tasks out of the payload
-    payload = email.get_payload()
     tasks = []
+
+    for part in message.walk():
+        # find the first text portion of the email
+        if part.get_content_maintype() != 'text':
+            continue
+        payload = part.get_payload(decode=True)
+        break
 
     task_type = 'UNSPECIFIED'
     for line in payload.splitlines():
         m = re.search('TODO|DOING|DONE|BLOCK', line, re.IGNORECASE)
         if(m):
             task_type = m.group(0).lower()
-        else:
-            if(task_type != 'UNSPECIFIED'):
-                m = re.search('\*(.+)', line)
-                if(m):
-                    comment = m.group(1).strip()
-                    tasks.append({"type":task_type, "comment":comment})
+
+        if(task_type != 'UNSPECIFIED'):
+            m = re.search('\*(.+)', line)
+            if(m):
+                comment = m.group(1).strip()
+                tasks.append({"type":task_type, "comment":comment})
     return tasks
 
 
