@@ -53,6 +53,9 @@ def save(collection, entity):
 def get_user_by_email(email):
     return db['users'].find_one({"email": email})
 
+def get_users_by_digest_request():
+    return db['users'].find({"daily-digest" : True})
+
 def get_project_members(project_id):
     return db['users'].find({"project_id": ObjectId(project_id)})
 
