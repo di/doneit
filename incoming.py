@@ -43,12 +43,11 @@ def get_tasks(email):
 
 def main():
     message = email.message_from_string(sys.stdin.read())
+    doneit.log("Got email from %s" % message['From'])
 
     user = get_user(message)
     project = get_project(message)
     tasks = get_tasks(message)
-
-    doneit.log("Got email from %s" % user['name'])
 
     for task in tasks:
         entity = dict()
