@@ -7,6 +7,11 @@ Bottle is a micro-framework for Python:
 
     $ sudo easy_install bottle
 
+## pytz
+Pytz is brings the Olson tz database to Python.
+
+    $ sudo easy_install pytz 
+
 ## pymongo
 Pymongo is the MongoDB driver for Python:
 
