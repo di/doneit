@@ -14,6 +14,15 @@ hdlr.setFormatter(formatter)
 logger.addHandler(hdlr) 
 logger.setLevel(logging.INFO)
 
+website_url = "http://localhost:80"
+email_sending_service_host = "localhost"
+email_sending_service_port = 5001
+email_sending_service_url = "http://%s:%d" % (email_sending_service_host, email_sending_service_port)
+digest_composition_service_host = "localhost"
+digest_composition_service_port = 5002
+digest_composition_service_url = "http://%s:%d" % (digest_composition_service_host, digest_composition_service_port)
+
+
 db = Connection('localhost', 27017).doneit
 sessions = dict()
 

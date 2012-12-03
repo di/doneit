@@ -7,8 +7,12 @@ Bottle is a micro-framework for Python:
 
     $ sudo easy_install bottle
 
+## requests
+Requests is an HTTP library for Python:
+    $ sudo easy_install requests
+
 ## pytz
-Pytz is brings the Olson tz database to Python.
+Pytz is brings the Olson tz database to Python:
 
     $ sudo easy_install pytz 
 
