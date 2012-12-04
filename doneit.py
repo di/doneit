@@ -5,7 +5,7 @@
 import logging
 import base64, OpenSSL
 import smtplib
-from email.mime.txt import MIMEText
+from email.mime.text import MIMEText
 from pymongo import Connection
 from bson.objectid import ObjectId
 from datetime import timedelta
