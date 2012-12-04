@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import doneit
-import sys, time, bottle, pymongo, json, bson, urllib, datetime, pytz
+import sys, time, requests, bottle, pymongo, json, bson, urllib, datetime, pytz
 #from dateutil.tz import tzlocal
 from doneit import check
 from bottle import route, run, request, response, abort, template, redirect
@@ -52,9 +52,11 @@ def add_tasks():
             entity[field] = request.forms.get(field)
         entity['user_id'] = user_id
         entity['project_id'] = project_id
-        entity['date'] = datetime.datetime.utcnow()
-        _id = doneit.add_task(entity)
-        redirect("/projects/%s" % (project_id))
+        r = requests.post(doneit.entry_input_service_url + "/task", entity)
+        if r.json['status'] == "success":
+            redirect("/projects/%s" % (project_id))
+        else:
+            redirect("/tasks/add")
     else:
         redirect("/login?ret=%s" % (request.path))
 
