@@ -6,6 +6,7 @@ import logging
 import base64, OpenSSL
 from pymongo import Connection
 from bson.objectid import ObjectId
+from datetime import timedelta
 
 logger = logging.getLogger('doneit')
 hdlr = logging.FileHandler('/var/log/doneit.log')
@@ -75,7 +76,7 @@ def get_by_id(collection, _id):
     return db[collection].find_one({"_id": ObjectId(_id)})
 
 def get_tasks(task_type, project_id, date):
-    return db['tasks'].find({"project_id": ObjectId(project_id), "type": task_type, "date": {"$gte": date}})
+    return db['tasks'].find({"project_id": ObjectId(project_id), "type": task_type, "date": {"$gte": date, "$lte": date+timedelta(days=1)}})
 
 # Log a message
 def log(msg):
