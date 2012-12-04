@@ -4,6 +4,8 @@
 
 import logging
 import base64, OpenSSL
+import smtplib
+from email.mime.txt import MIMEText
 from pymongo import Connection
 from bson.objectid import ObjectId
 from datetime import timedelta
@@ -80,6 +82,15 @@ def get_by_id(collection, _id):
 
 def get_tasks(task_type, project_id, date):
     return db['tasks'].find({"project_id": ObjectId(project_id), "type": task_type, "date": {"$gte": date, "$lte": date+timedelta(days=1)}})
+
+def send_email(to, subject, body):
+    msg = MIMEText(body)
+    msg['Subject'] = "[doneit] %s" % (subject)
+    msg['From'] = "doneit@doneit.cs.drexel.edu"
+    msg['To'] = to
+    s = smtplib.SMTP('localhost')
+    s.sendmail(msg['From'], [to], msg.as_string())
+    s.quit()
 
 # Log a message
 def log(msg):
