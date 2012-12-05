@@ -2,7 +2,6 @@
 
 import doneit
 import sys, time, requests, bottle, pymongo, json, bson, urllib, datetime, pytz
-#from dateutil.tz import tzlocal
 from doneit import check
 from bottle import route, run, request, response, abort, template, redirect
 from bson.objectid import ObjectId
@@ -105,7 +104,6 @@ def get_project(id):
     entity = doneit.get_by_id('projects', id)
     entity['admin'] = doneit.get_by_id("users", entity['admin_id'])
     timezone = pytz.timezone('US/Eastern')
-#    timezone = tzlocal()
     if request.query.date:
         entity['date'] = datetime.datetime.fromtimestamp(time.mktime(time.strptime(request.query.date, "%y-%m-%d")))
     else:

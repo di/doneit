@@ -14,7 +14,7 @@ logger = logging.getLogger('doneit')
 hdlr = logging.FileHandler('/var/log/doneit.log')
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 hdlr.setFormatter(formatter)
-logger.addHandler(hdlr) 
+logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
 
 email_sending_service_host = "localhost"

@@ -7,7 +7,6 @@ from bottle import route, run, request, response, abort, template, redirect
 from bson.objectid import ObjectId
 from daemon import Daemon
 
-
 @route('/:project_id', method='GET')
 def digest_composition(project_id):
     doneit.log("Retrieving digest for %s" % project_id)

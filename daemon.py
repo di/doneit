@@ -39,7 +39,7 @@ class Daemon:
         os.umask(0)
 
         # do second fork
-        try: 
+        try:
             pid = os.fork()
             if pid > 0:
                 # exit from second parent

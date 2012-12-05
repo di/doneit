@@ -7,7 +7,6 @@ from bottle import route, run, request, response, abort, template, redirect
 from bson.objectid import ObjectId
 from daemon import Daemon
 
-
 @route('/', method='POST')
 def email_digest():
     doneit.log("Sending digest for %s at %s" % (request.forms.get('name'), request.forms.get('email')))
@@ -16,7 +15,6 @@ def email_digest():
 class MyDaemon(Daemon):
     def run(self):
         run(host=doneit.email_sending_service_host, port=doneit.email_sending_service_port, debug=True)
-
 
 if __name__ == "__main__":
     daemon = MyDaemon('/tmp/email_sending.pid')

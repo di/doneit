@@ -3,7 +3,7 @@
 import sys, email, re, datetime
 import doneit
 
-# this script reads an email from stdin. 
+# this script reads an email from stdin.
 # to test, use:
 # $ cat email.sample | ./incoming.py
 
@@ -46,7 +46,6 @@ def get_tasks(message):
                 tasks.append({"type":task_type, "comment":comment})
     return tasks
 
-
 def main():
     message = email.message_from_string(sys.stdin.read())
     doneit.log("Got email from %s" % message['From'])
@@ -65,7 +64,6 @@ def main():
 
         doneit.log("Submit Task: %s, %s, %s, %s" % (user['email'], project['name'], task['type'], task['comment']))
         _id = doneit.add_task(entity)
-
 
 if __name__ == "__main__":
     main()
