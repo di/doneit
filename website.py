@@ -35,15 +35,15 @@ def logout():
     doneit.logout(request)
     redirect("/")
 
-@route('/tasks/add', method='GET')
-def add_tasks():
+@route('/tasks', method='GET')
+def get_tasks():
     if check(request):
-        return template('tasks_add', loggedin=check(request))
+        return template('tasks', loggedin=check(request))
     else:
         redirect("/login?ret=%s" % (request.path))
 
-@route('/tasks/add', method='POST')
-def add_tasks():
+@route('/tasks', method='POST')
+def post_tasks():
     if check(request):
         entity = dict()
         user_id = request.get_cookie("_id")
@@ -56,25 +56,18 @@ def add_tasks():
         if r.json['status'] == "success":
             redirect("/projects/%s" % (project_id))
         else:
-            redirect("/tasks/add")
+            redirect("/tasks")
     else:
         redirect("/login?ret=%s" % (request.path))
 
 @route('/users', method='GET')
 def get_users():
-    entity = doneit.get_all('users')
-    return template('users', loggedin=check(request), users=entity)
+    users = doneit.get_all('users')
+    projects = doneit.get_all('projects')
+    return template('users', loggedin=check(request), users=users, projects=projects)
 
-@route('/users/add', method='GET')
-def add_users():
-    if check(request):
-        entity = doneit.get_all('projects')
-        return template('users_add', loggedin=check(request), projects=entity)
-    else:
-        redirect("/login?ret=%s" % (request.path))
-
-@route('/users/add', method='POST')
-def add_users():
+@route('/users', method='POST')
+def post_users():
     if check(request):
         entity = dict()
         for field in ['name', 'email', 'password', 'daily-digest']:
@@ -95,15 +88,8 @@ def get_projects():
     entity = doneit.get_all('projects')
     return template('projects', loggedin=check(request), projects=entity)
 
-@route('/projects/add', method='GET')
-def add_projects():
-    if check(request):
-        return template('projects_add', loggedin=check(request))
-    else:
-        redirect("/login?ret=%s" % (request.path))
-
-@route('/projects/add', method='POST')
-def add_projects():
+@route('/projects', method='POST')
+def post_projects():
     if check(request):
         entity = dict()
         for field in ['name', 'description']:

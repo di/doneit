@@ -6,9 +6,7 @@
 </ul>
 <h2>Actions:</h2>
 <ul>
-<li><a href="/users/add">Add a user</a></li>
-<li><a href="/projects/add">Add a project</a></li>
-<li><a href="/tasks/add">Add a task</a></li>
+<li><a href="/tasks">Add a task</a></li>
 </li>
 %title='Home'
 %rebase layout **locals()

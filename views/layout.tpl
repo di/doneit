@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>{{title or 'No title'}}</title>
+  <title>DoneIt: {{title or 'No title'}}</title>
 </head>
 <body>
   <a href="/">Home</a> | 

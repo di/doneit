@@ -9,6 +9,11 @@
 %end
 </p>
 <hr>
+<p>
+    <a href="?date={{(project['date']-timedelta(days=1)).strftime("%y-%m-%d")}}">< Previous day</a> | 
+    <a href="?">Today</a> | 
+    <a href="?date={{(project['date']+timedelta(days=1)).strftime("%y-%m-%d")}}">Following day ></a>
+</p>
 <p>Project status as of <b>{{project['date'].strftime("%B %d, %Y (%A)")}}</b></p>
 %for type in ['todo', 'doing', 'block', 'done']:
     <b>{{type.title()}}:</b>
@@ -23,12 +28,6 @@
     %end
     </ul>
 %end
-
-<p>
-    <a href="?date={{(project['date']-timedelta(days=1)).strftime("%y-%m-%d")}}">< Previous day</a> | 
-    <a href="?">Today</a> | 
-    <a href="?date={{(project['date']+timedelta(days=1)).strftime("%y-%m-%d")}}">Following day ></a>
-</p>
 <p><a href="/projects">< Back to projects</a></p>
 %title=project['name']
 %rebase layout **locals()
