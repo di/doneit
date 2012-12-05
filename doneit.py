@@ -17,6 +17,9 @@ hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
 
+date_format_digest = '%B %d, %Y (%A)'
+date_format_url = '%y-%m-%d'
+
 email_sending_service_host = "localhost"
 email_sending_service_port = 5001
 email_sending_service_url = "http://%s:%d" % (email_sending_service_host, email_sending_service_port)

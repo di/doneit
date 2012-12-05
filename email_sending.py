@@ -4,20 +4,47 @@ import doneit
 import sys, time, bottle, pymongo, requests, json, bson, urllib, datetime, pytz
 from doneit import check
 from bottle import route, run, request, response, abort, template, redirect
+from bson import json_util
 from bson.objectid import ObjectId
 from daemon import Daemon
 
 @route('/', method='POST')
 def email_digest():
+
+    timezone = pytz.timezone('US/Eastern')
+    date = datetime.datetime.now(timezone).replace(hour=0,minute=0,second=0,microsecond=0).astimezone(pytz.utc) # midnight today
+
     doneit.log("Sending digest for %s at %s" % (request.forms.get('name'), request.forms.get('email')))
-    r = requests.get("%s/%s" % (doneit.digest_composition_service_url, request.forms.get('project_id')))
+    r = requests.get("%s/%s?date=%s" % (doneit.digest_composition_service_url, 
+                                        request.forms.get('project_id'), 
+                                        date.strftime(doneit.date_format_url)))
+    tasks = r.json['tasks']
+
+    to = request.forms.get('email')
+    subject = "Daily digest for %s" % doneit.get_by_id('projects', request.forms.get('project_id'))['name']
+    body = []
+    body.append("Project status as of %s\n\n" % datetime.datetime.now().strftime(doneit.date_format_digest))
+    for task_type in tasks:
+        body.append("%s:\n" % task_type)
+        if tasks[task_type]:
+            task_list = json_util.loads(r.json['tasks'][task_type]) 
+            for task in task_list:
+                user = doneit.get_by_id('users', task['user_id'])
+                body.append("\t* %s - %s\n" % (task['comment'], user['name']))
+        else:
+            body.append("\tNone\n")
+   
+    body = ''.join(body)
+
+    doneit.send_email(to, subject, body)
+
 
 class MyDaemon(Daemon):
     def run(self):
         run(host=doneit.email_sending_service_host, port=doneit.email_sending_service_port, debug=True)
 
 if __name__ == "__main__":
-    daemon = MyDaemon('/tmp/email_sending.pid')
+    daemon = MyDaemon('/tmp/email_sending.pid', stderr='/var/log/email_sending.log')
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
             daemon.start()
