@@ -26,15 +26,19 @@ def email_digest():
     body.append("Project status as of %s\n\n" % datetime.datetime.now().strftime(doneit.date_format_digest))
     for task_type in tasks:
         body.append("%s:\n" % task_type)
-        if tasks[task_type]:
-            task_list = json_util.loads(r.json['tasks'][task_type]) 
+        task_list = json_util.loads(r.json['tasks'][task_type]) 
+        if len(task_list) > 0:
             for task in task_list:
                 user = doneit.get_by_id('users', task['user_id'])
                 body.append("\t* %s - %s\n" % (task['comment'], user['name']))
         else:
-            body.append("\tNone\n")
+            body.append("\t* None\n")
    
     body = ''.join(body)
+
+#    doneit.log(to)
+#    doneit.log(subject)
+#    doneit.log(body)
 
     doneit.send_email(to, subject, body)
 

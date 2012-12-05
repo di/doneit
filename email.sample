@@ -55,7 +55,6 @@ DONE:
 * push incoming.py to github
 
 BLOCK:
-* not sure how to send messages to services
+* not sure how to send messages to services - getting there
 
 TODO: 
-* code to send digest emails
