@@ -41,7 +41,7 @@ def email_digest():
 #    doneit.log(subject)
 #    doneit.log(body)
 
-#    doneit.send_email(to, subject, body)
+    doneit.send_email(to, subject, body)
 
 
 @route('/reminder', method='POST')
@@ -61,7 +61,7 @@ def email_reminder():
 #    doneit.log(subject)
 #    doneit.log(body)
 
-#    doneit.send_email(to, subject, body)
+    doneit.send_email(to, subject, body)
 
 def sign(body):
     body.append("\n\n")
