@@ -105,9 +105,9 @@ def get_project(id):
     entity['admin'] = doneit.get_by_id("users", entity['admin_id'])
     timezone = pytz.timezone('US/Eastern')
     if request.query.date:
-        entity['date'] = datetime.datetime.fromtimestamp(time.mktime(time.strptime(request.query.date, "%y-%m-%d")))
+        entity['date'] = pytz.UTC.localize(datetime.datetime.fromtimestamp(time.mktime(time.strptime(request.query.date, "%y-%m-%d"))))
     else:
-        entity['date'] = datetime.datetime.now(timezone).replace(hour=0,minute=0,second=0,microsecond=0).astimezone(pytz.utc) # midnight today
+        entity['date'] = pytz.UTC.localize(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)) # midnight today
     for task_type in ['done', 'todo', 'block', 'doing']:
         entity[task_type] = doneit.get_tasks(task_type, entity['_id'], entity['date'])
     return template('project', loggedin=check(request), project=entity)
