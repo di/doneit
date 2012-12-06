@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys, email, re, datetime
+import sys, email, re, datetime, requests
 import doneit
 
 # this script reads an email from stdin.
@@ -46,6 +46,13 @@ def get_tasks(message):
                 tasks.append({"type":task_type, "comment":comment})
     return tasks
 
+def send_error_reply(message):
+    to = message['From']
+    subject = "Re: %s" % message['Subject']
+    body = "The following message was rejected by the doneit system.\n\n%s" % message.get_payload()
+    doneit.send_email(to, subject, body)
+
+
 def main():
     message = email.message_from_string(sys.stdin.read())
     doneit.log("Got email from %s" % message['From'])
@@ -53,6 +60,9 @@ def main():
     user = get_user(message)
     project = get_project(message)
     tasks = get_tasks(message)
+
+    if (user == None) or (project == None) or (tasks == None):
+        send_error_reply(message)
 
     for task in tasks:
         entity = dict()
@@ -63,7 +73,10 @@ def main():
             entity[field] = task[field]
 
         doneit.log("Submit Task: %s, %s, %s, %s" % (user['email'], project['name'], task['type'], task['comment']))
-        _id = doneit.add_task(entity)
+        r = requests.post(doneit.entry_input_service_url + "/task", entity)
+        if r.json['status'] != "success":
+            send_error_reply(message)
+
 
 if __name__ == "__main__":
     main()
