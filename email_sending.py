@@ -8,7 +8,7 @@ from bson import json_util
 from bson.objectid import ObjectId
 from daemon import Daemon
 
-@route('/', method='POST')
+@route('/digest', method='POST')
 def email_digest():
 
     timezone = pytz.timezone('US/Eastern')
@@ -33,14 +33,42 @@ def email_digest():
                 body.append("\t* %s - %s\n" % (task['comment'], user['name']))
         else:
             body.append("\t* None\n")
-   
+
+    sign(body)
     body = ''.join(body)
 
 #    doneit.log(to)
 #    doneit.log(subject)
 #    doneit.log(body)
 
-    doneit.send_email(to, subject, body)
+#    doneit.send_email(to, subject, body)
+
+
+@route('/reminder', method='POST')
+def email_reminder():
+    doneit.log("Sending reminder for %s at %s" % (request.forms.get('name'), request.forms.get('email')))
+
+    project = doneit.get_by_id('projects', request.forms.get('project_id'))
+
+    to = request.forms.get('email')
+    subject = "Daily reminder for %s" % project['name']
+    body = []
+    body.append("Please remember to provide your status for %s.\n" % project['name'])
+    sign(body)
+    body = ''.join(body)
+
+#    doneit.log(to)
+#    doneit.log(subject)
+#    doneit.log(body)
+
+#    doneit.send_email(to, subject, body)
+
+def sign(body):
+    body.append("\n\n")
+    body.append("From,\n")
+    body.append("  Your friends at doneit!\n")
+    body.append("\n\n")
+    body.append("--- You may reply to this email. ---\n")
 
 
 class MyDaemon(Daemon):

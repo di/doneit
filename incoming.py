@@ -63,6 +63,7 @@ def main():
 
     if (user == None) or (project == None) or (tasks == None):
         send_error_reply(message)
+        return
 
     for task in tasks:
         entity = dict()
@@ -76,7 +77,7 @@ def main():
         r = requests.post(doneit.entry_input_service_url + "/task", entity)
         if r.json['status'] != "success":
             send_error_reply(message)
-
+            return
 
 if __name__ == "__main__":
     main()
