@@ -28,7 +28,7 @@ digest_composition_service_host = "localhost"
 digest_composition_service_port = 5002
 digest_composition_service_url = "http://%s:%d" % (digest_composition_service_host, digest_composition_service_port)
 
-entry_input_service_host = "localhost"
+entry_input_service_host = "doneit.cs.drexel.edu"
 entry_input_service_port = 5003
 entry_input_service_url = "http://%s:%d" % (entry_input_service_host, entry_input_service_port)
 
@@ -69,7 +69,7 @@ def save(collection, entity):
     return db[collection].save(entity)
 
 def get_user_by_email(email):
-    return db['users'].find_one({"email": email})
+    return db['users'].find_one({'$or': [{"email": email}, {"alternate-email": email}]})
 
 def get_user_list_by_digest_request(hour):
     user_list = []

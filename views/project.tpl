@@ -10,6 +10,7 @@
     <a href="/users/{{user['_id']}}">{{user['name']}}</a>
 %end
 </p>
+<p>Post-commit hook URL:<input size="50" value="http://{{doneit.entry_input_service_host}}:{{doneit.entry_input_service_port}}/github?id={{project['_id']}}&key={{project['secret-key']}}"</input></p>
 <hr>
 <p>
     <a href="?date={{(project['date']-timedelta(days=1)).strftime("%y-%m-%d")}}">< Previous day</a> | 

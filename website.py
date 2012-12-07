@@ -2,6 +2,7 @@
 
 import doneit
 import sys, time, requests, bottle, pymongo, json, bson, urllib, datetime, pytz
+import random
 from doneit import check
 from bottle import route, run, request, response, abort, template, redirect
 from bson.objectid import ObjectId
@@ -94,6 +95,7 @@ def post_projects():
         for field in ['name', 'description', 'digest-hour']:
             entity[field] = request.forms.get(field)
         entity['admin_id'] = request.get_cookie("_id")
+        entity['secret-key'] = "%032x" % random.getrandbits(128)
         _id = doneit.add_project(entity)
         redirect("/projects/%s" % (_id))
     else:
