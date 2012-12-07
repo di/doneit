@@ -24,7 +24,7 @@
 </select><br>
 <label for="reminder-hour">Time to send daily reminder:</label>
 <select name="reminder-hour">
-  <option value="24">Midnight</option>
+  <option value="0">Midnight</option>
   <option value="1">1 AM</option>
   <option value="2">2 AM</option>
   <option value="3">3 AM</option>
