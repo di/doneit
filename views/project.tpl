@@ -1,8 +1,10 @@
 %import doneit
-%from datetime import timedelta
+%import datetime
+%from datetime import timedelta, datetime
 <h1>{{project['name']}}</h1>
 <p>Description: {{project['description']}}</p>
 <p>Manager: <a href="/users/{{project['admin']['_id']}}">{{project['admin']['name']}}</a></p>
+<p>Digest sent at: {{datetime.strptime(project['digest-hour'], '%H').strftime('%l %p')}}</p>
 <p>Members:
 %for user in doneit.get_project_members(project['_id']):
     <a href="/users/{{user['_id']}}">{{user['name']}}</a>
