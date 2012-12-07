@@ -14,9 +14,9 @@ def digest_composition(project_id):
 
     timezone = pytz.timezone('US/Eastern')
     if request.query.date:
-        date = datetime.datetime.fromtimestamp(time.mktime(time.strptime(request.query.date, doneit.date_format_url)))
+        date = pytz.UTC.localize(datetime.datetime.fromtimestamp(time.mktime(time.strptime(request.query.date, "%y-%m-%d"))))
     else:
-        date = datetime.datetime.now(timezone).replace(hour=0,minute=0,second=0,microsecond=0).astimezone(pytz.utc) # midnight today
+        date = pytz.UTC.localize(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)) # midnight today
 
     doneit.log("Digest requested for %s as of %s" % (project['name'], date))
 
