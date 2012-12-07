@@ -91,7 +91,7 @@ def get_projects():
 def post_projects():
     if check(request):
         entity = dict()
-        for field in ['name', 'description', 'digest-time']:
+        for field in ['name', 'description', 'digest-hour']:
             entity[field] = request.forms.get(field)
         entity['admin_id'] = request.get_cookie("_id")
         _id = doneit.add_project(entity)
