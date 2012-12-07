@@ -80,7 +80,7 @@ And then update Postfix's aliases:
 
     $ sudo postalias /etc/aliases
 
-## Cronjob
+## Setup waker cronjob
 The waker process is initiated by a cronjob periodically. 
 
 To edit the root crontab:
@@ -89,9 +89,9 @@ To edit the root crontab:
 
 Then setup the cron with the following line:
 
-    0 * * * * /doneit/waker.py 60 2>&1
+    0 * * * * /doneit/waker.py 2>&1
 
-This triggers the waker every hour on the hour and informs it to look back 60 minutes for email requests. The 2>&1 is used to suppress emails from the cron.
+This triggers the waker every hour on the hour. The 2>&1 is used to suppress emails from the cron.
 
 ## Logging
 Logs are logged at `/var/log/doneit.log`

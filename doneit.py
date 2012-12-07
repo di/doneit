@@ -71,11 +71,21 @@ def save(collection, entity):
 def get_user_by_email(email):
     return db['users'].find_one({"email": email})
 
-def get_users_by_digest_request(since_time):
-    return db['users'].find({"daily-digest" : True})
+def get_user_list_by_digest_request(hour):
+    user_list = []
+    projects = db['projects'].find({"digest-hour" : str(hour)})
+    for project in projects:
+        users = db['users'].find({"project_id" : ObjectId(project['_id']), "daily-digest" : True})
+        for user in users:
+            user_list.append(user)
+    return user_list
 
-def get_users_by_reminder_request(since_time):
-    return db['users'].find({"daily-digest" : True})
+def get_user_list_by_reminder_request(hour):
+    user_list = []
+    users = db['users'].find({"reminder-hour" : str(hour)})
+    for user in users:
+        user_list.append(user)
+    return user_list
 
 def get_project_members(project_id):
     return db['users'].find({"project_id": ObjectId(project_id)})
