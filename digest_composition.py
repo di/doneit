@@ -18,6 +18,9 @@ def digest_composition(project_id):
     else:
         date = pytz.UTC.localize(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)) # midnight today
 
+    # Offset date based on when digest is sent (plus a magic number)
+    entity['date'] = entity['date'] + timedelta(hours=int(entity['digest-hour']) + 5)
+
     doneit.log("Digest requested for %s as of %s" % (project['name'], date))
 
     response = {'status':'success', 'tasks':{'done':[], 'todo':[], 'block':[], 'doing':[]}}
