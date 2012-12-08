@@ -11,12 +11,14 @@
 <input type="text" name="name"><br>
 <label for="email">Email:</label>
 <input type="text" name="email"><br>
+<label for="alternate-email">Alternate Email (optional):</label>
+<input type="text" name="alternate-email"><br>
 <label for="password">Password:</label>
 <input type="password" name="password"><br>
 <label for="daily-digest">Daily Digest?:</label>
 <input type="radio" name="daily-digest" value="true" checked>True
 <input type="radio" name="daily-digest" value="false">False<br>
-<label for="daily-digest">Daily Reminder?:</label>
+<label for="reminder-email">Daily Reminder?:</label>
 <input type="radio" name="reminder-email" value="true" checked>True
 <input type="radio" name="reminder-email" value="false">False<br>
 <label for="project">Project:</label>
