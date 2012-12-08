@@ -14,8 +14,11 @@
 <label for="password">Password:</label>
 <input type="password" name="password"><br>
 <label for="daily-digest">Daily Digest?:</label>
-<input type="radio" name="daily-digest" value="true">True
+<input type="radio" name="daily-digest" value="true" checked>True
 <input type="radio" name="daily-digest" value="false">False<br>
+<label for="daily-digest">Daily Reminder?:</label>
+<input type="radio" name="reminder-email" value="true" checked>True
+<input type="radio" name="reminder-email" value="false">False<br>
 <label for="project">Project:</label>
 <select name="project">
 %for project in projects:

@@ -12,8 +12,9 @@ def main():
 
     users = doneit.get_user_list_by_reminder_request(hour)
     for user in users:
-        doneit.log("Waker to initiate reminder request for %s" % user['name'])
-        r = requests.post(doneit.email_sending_service_url + "/reminder", user)
+        if user['reminder-email']:
+            doneit.log("Waker to initiate reminder request for %s" % user['name'])
+            r = requests.post(doneit.email_sending_service_url + "/reminder", user)
 
     users = doneit.get_user_list_by_digest_request(hour)
     for user in users:
