@@ -17,7 +17,7 @@
     <a href="?">Today</a> | 
     <a href="?date={{(project['date']+timedelta(days=1)).strftime("%y-%m-%d")}}">Following day ></a>
 </p>
-<p>Project status as of <b>{{project['date'].strftime(doneit.date_format_digest)}}</b></p>
+<p>Project status up until <b>{{project['date'].strftime(doneit.date_format_digest)}}</b></p>
 %for type in ['todo', 'doing', 'block', 'done']:
     <b>{{type.title()}}:</b>
     <ul>

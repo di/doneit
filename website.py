@@ -112,6 +112,9 @@ def get_project(id):
         entity['date'] = doneit.timezone.localize(datetime.datetime.fromtimestamp(time.mktime(time.strptime(request.query.date, "%y-%m-%d"))))
     else:
         entity['date'] = doneit.timezone.localize(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)) # midnight today
+        if (doneit.timezone.localize(datetime.datetime.now()).hour > int(entity['digest-hour'])):
+            # Cutoff has already passed for today
+            entity['date'] = entity['date'] + timedelta(days=1)
 
     # Offset date based on when digest is sent (plus a magic number)
     entity['date'] = entity['date'] + timedelta(hours=int(entity['digest-hour']))
