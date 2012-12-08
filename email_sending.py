@@ -11,7 +11,7 @@ from daemon import Daemon
 @route('/digest', method='POST')
 def email_digest():
     timezone = pytz.timezone('US/Eastern')
-    date = datetime.datetime.now(timezone).replace(hour=0,minute=0,second=0,microsecond=0).astimezone(pytz.utc) # midnight today
+    date = doneit.timezone.localize(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)) # midnight today
 
     doneit.log("Sending digest for %s at %s" % (request.forms.get('name'), request.forms.get('email')))
     r = requests.get("%s/%s?date=%s" % (doneit.digest_composition_service_url,
@@ -23,14 +23,18 @@ def email_digest():
     body = []
     body.append("Project status as of %s\n\n" % datetime.datetime.now().strftime(doneit.date_format_digest))
     for task_type in tasks:
-        body.append("%s:\n" % task_type)
+        body.append("%s:\n" % task_type.title())
         task_list = json_util.loads(r.json['tasks'][task_type])
         if len(task_list) > 0:
             for task in task_list:
                 user = doneit.get_by_id('users', task['user_id'])
-                body.append("\t* %s - %s\n" % (task['comment'], user['name']))
+                body.append("* %s - %s\n" % (task['comment'], user['name']))
         else:
-            body.append("\t* None\n")
+            body.append("* None\n")
+        body.append('\n')
+
+    body.append('\nView your project here:\n')
+    body.append('http://doneit.cs.drexel.edu/projects/%s\n' % (request.forms.get('project_id')))
 
     sign(body)
     body = ''.join(body)

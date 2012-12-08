@@ -7,6 +7,7 @@ from bottle import route, run, request, response, abort, template, redirect
 from bson import json_util
 from bson.objectid import ObjectId
 from daemon import Daemon
+from datetime import timedelta
 
 @route('/:project_id', method='GET')
 def digest_composition(project_id):
@@ -14,12 +15,13 @@ def digest_composition(project_id):
 
     timezone = pytz.timezone('US/Eastern')
     if request.query.date:
-        date = pytz.UTC.localize(datetime.datetime.fromtimestamp(time.mktime(time.strptime(request.query.date, "%y-%m-%d"))))
+        date = doneit.timezone.localize(datetime.datetime.fromtimestamp(time.mktime(time.strptime(request.query.date, "%y-%m-%d"))))
+        doneit.log(request.query.date)
     else:
-        date = pytz.UTC.localize(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)) # midnight today
+        date = doneit.timezone.localize(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)) # midnight today
 
-    # Offset date based on when digest is sent (plus a magic number)
-    entity['date'] = entity['date'] + timedelta(hours=int(entity['digest-hour']) + 5)
+    # Offset date based on when digest is sent
+    date = date + timedelta(hours=int(project['digest-hour']))
 
     doneit.log("Digest requested for %s as of %s" % (project['name'], date))
 
