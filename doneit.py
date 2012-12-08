@@ -5,6 +5,7 @@
 import logging
 import base64, OpenSSL
 import smtplib
+import pytz
 from email.mime.text import MIMEText
 from pymongo import Connection
 from bson.objectid import ObjectId
@@ -19,6 +20,8 @@ logger.setLevel(logging.INFO)
 
 date_format_digest = '%B %d, %Y (%A)'
 date_format_url = '%y-%m-%d'
+
+timezone = pytz.timezone('US/Eastern')
 
 email_sending_service_host = "localhost"
 email_sending_service_port = 5001
@@ -97,7 +100,7 @@ def get_by_id(collection, _id):
     return db[collection].find_one({"_id": ObjectId(_id)})
 
 def get_tasks(task_type, project_id, date):
-    return db['tasks'].find({"project_id": ObjectId(project_id), "type": task_type, "date": {"$gte": date, "$lte": date+timedelta(days=1)}})
+    return db['tasks'].find({"project_id": ObjectId(project_id), "type": task_type, "date": {"$gte": date-timedelta(days=1), "$lte": date}})
 
 def send_email(to, subject, body):
     msg = MIMEText(body)

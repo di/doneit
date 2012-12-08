@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import doneit
-import sys, time, requests, bottle, pymongo, json, bson, urllib, datetime, pytz
+import sys, time, requests, bottle, pymongo, json, bson, urllib, datetime
 import random
 from doneit import check
 from bottle import route, run, request, response, abort, template, redirect
@@ -106,14 +106,13 @@ def post_projects():
 def get_project(id):
     entity = doneit.get_by_id('projects', id)
     entity['admin'] = doneit.get_by_id("users", entity['admin_id'])
-    timezone = pytz.timezone('US/Eastern')
     if request.query.date:
-        entity['date'] = pytz.UTC.localize(datetime.datetime.fromtimestamp(time.mktime(time.strptime(request.query.date, "%y-%m-%d"))))
+        entity['date'] = doneit.timezone.localize(datetime.datetime.fromtimestamp(time.mktime(time.strptime(request.query.date, "%y-%m-%d"))))
     else:
-        entity['date'] = pytz.UTC.localize(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)) # midnight today
+        entity['date'] = doneit.timezone.localize(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)) # midnight today
 
     # Offset date based on when digest is sent (plus a magic number)
-    entity['date'] = entity['date'] + timedelta(hours=int(entity['digest-hour']) + 5)
+    entity['date'] = entity['date'] + timedelta(hours=int(entity['digest-hour']))
 
     for task_type in ['done', 'todo', 'block', 'doing']:
         entity[task_type] = doneit.get_tasks(task_type, entity['_id'], entity['date'])
