@@ -4,7 +4,7 @@
 <h1>{{project['name']}}</h1>
 <p>Description: {{project['description']}}</p>
 <p>Manager: <a href="/users/{{project['admin']['_id']}}">{{project['admin']['name']}}</a></p>
-<p>Digest sent at: {{datetime.strptime(project['digest-hour'], '%H').strftime('%l %p')}}</p>
+<p>Digest sent at: {{datetime.strptime(project['digest-hour'], '%H').strftime('%l %p EST')}}</p>
 <p>Members:
 %for user in doneit.get_project_members(project['_id']):
     <a href="/users/{{user['_id']}}">{{user['name']}}</a>
@@ -17,7 +17,7 @@
     <a href="?">Today</a> | 
     <a href="?date={{(project['date']+timedelta(days=1)).strftime("%y-%m-%d")}}">Following day ></a>
 </p>
-<p>Project status as of <b>{{project['date'].strftime("%B %d, %Y (%A)")}}</b></p>
+<p>Project status as of <b>{{project['date'].strftime("%B %d, %Y EST (%A)")}}</b></p>
 %for type in ['todo', 'doing', 'block', 'done']:
     <b>{{type.title()}}:</b>
     <ul>
