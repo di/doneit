@@ -10,23 +10,21 @@ from daemon import Daemon
 
 @route('/digest', method='POST')
 def email_digest():
-
     timezone = pytz.timezone('US/Eastern')
     date = datetime.datetime.now(timezone).replace(hour=0,minute=0,second=0,microsecond=0).astimezone(pytz.utc) # midnight today
 
     doneit.log("Sending digest for %s at %s" % (request.forms.get('name'), request.forms.get('email')))
-    r = requests.get("%s/%s?date=%s" % (doneit.digest_composition_service_url, 
-                                        request.forms.get('project_id'), 
+    r = requests.get("%s/%s?date=%s" % (doneit.digest_composition_service_url,
+                                        request.forms.get('project_id'),
                                         date.strftime(doneit.date_format_url)))
     tasks = r.json['tasks']
-
     to = request.forms.get('email')
     subject = "Daily digest for %s" % doneit.get_by_id('projects', request.forms.get('project_id'))['name']
     body = []
     body.append("Project status as of %s\n\n" % datetime.datetime.now().strftime(doneit.date_format_digest))
     for task_type in tasks:
         body.append("%s:\n" % task_type)
-        task_list = json_util.loads(r.json['tasks'][task_type]) 
+        task_list = json_util.loads(r.json['tasks'][task_type])
         if len(task_list) > 0:
             for task in task_list:
                 user = doneit.get_by_id('users', task['user_id'])
@@ -37,12 +35,7 @@ def email_digest():
     sign(body)
     body = ''.join(body)
 
-#    doneit.log(to)
-#    doneit.log(subject)
-#    doneit.log(body)
-
     doneit.send_email(to, subject, body)
-
 
 @route('/reminder', method='POST')
 def email_reminder():
@@ -57,10 +50,6 @@ def email_reminder():
     sign(body)
     body = ''.join(body)
 
-#    doneit.log(to)
-#    doneit.log(subject)
-#    doneit.log(body)
-
     doneit.send_email(to, subject, body)
 
 def sign(body):
@@ -69,7 +58,6 @@ def sign(body):
     body.append("  Your friends at doneit!\n")
     body.append("\n\n")
     body.append("--- You may reply to this email. ---\n")
-
 
 class MyDaemon(Daemon):
     def run(self):
