@@ -18,7 +18,7 @@ hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
 
-date_format_digest = '%B %d, %Y (%A)'
+date_format_digest = '%B %d, %Y (%A) @ %l %p EST'
 date_format_url = '%y-%m-%d'
 
 timezone = pytz.timezone('US/Eastern')
