@@ -71,8 +71,10 @@ def get_users():
 def post_users():
     if check(request):
         entity = dict()
-        for field in ['name', 'email', 'password', 'daily-digest', 'reminder-hour', 'reminder-email', 'alternate-email']:
+        for field in ['name', 'email', 'password', 'reminder-hour', 'alternate-email']:
             entity[field] = request.forms.get(field)
+        for field in ['daily-digest', 'reminder-email']:
+            entity[field] = (request.forms.get(field) == 'true')
         entity['project_id'] = ObjectId(request.forms.get('project'))
         _id = doneit.add_user(entity)
         redirect("/users/%s" % (_id))
