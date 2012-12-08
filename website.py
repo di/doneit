@@ -7,6 +7,7 @@ from doneit import check
 from bottle import route, run, request, response, abort, template, redirect
 from bson.objectid import ObjectId
 from daemon import Daemon
+from datetime import timedelta
 
 bottle.TEMPLATE_PATH.insert(0,'/doneit/views/')
 
@@ -110,6 +111,10 @@ def get_project(id):
         entity['date'] = pytz.UTC.localize(datetime.datetime.fromtimestamp(time.mktime(time.strptime(request.query.date, "%y-%m-%d"))))
     else:
         entity['date'] = pytz.UTC.localize(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)) # midnight today
+
+    # Offset date based on when digest is sent (plus a magic number)
+    entity['date'] = entity['date'] + timedelta(hours=int(entity['digest-hour']) + 5)
+
     for task_type in ['done', 'todo', 'block', 'doing']:
         entity[task_type] = doneit.get_tasks(task_type, entity['_id'], entity['date'])
     return template('project', loggedin=check(request), project=entity)
