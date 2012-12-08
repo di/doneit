@@ -33,9 +33,6 @@ def email_digest():
             body.append("* None\n")
         body.append('\n')
 
-    body.append('\nView your project here:\n')
-    body.append('http://doneit.cs.drexel.edu/projects/%s\n' % (request.forms.get('project_id')))
-
     sign(body)
     body = ''.join(body)
 
@@ -57,6 +54,8 @@ def email_reminder():
     doneit.send_email(to, subject, body)
 
 def sign(body):
+    body.append('\nView your project here:\n')
+    body.append('http://doneit.cs.drexel.edu/projects/%s\n' % (request.forms.get('project_id')))
     body.append("\n\n")
     body.append("From,\n")
     body.append("  Your friends at doneit!\n")
