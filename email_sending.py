@@ -28,9 +28,9 @@ def email_digest():
         if len(task_list) > 0:
             for task in task_list:
                 user = doneit.get_by_id('users', task['user_id'])
-                body.append("* %s - %s\n" % (task['comment'], user['name']))
+                body.append("%s %s - %s\n" % (u'\u2022', task['comment'], user['name']))
         else:
-            body.append("* None\n")
+            body.append("%s None\n" % (u'\u2022'))
         body.append('\n')
 
     sign(body)

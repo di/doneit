@@ -7,6 +7,7 @@ import base64, OpenSSL
 import smtplib
 import pytz
 from email.mime.text import MIMEText
+from email.header import Header
 from pymongo import Connection
 from bson.objectid import ObjectId
 from datetime import timedelta
@@ -103,7 +104,7 @@ def get_tasks(task_type, project_id, date):
     return db['tasks'].find({"project_id": ObjectId(project_id), "type": task_type, "date": {"$gte": date-timedelta(days=1), "$lte": date}})
 
 def send_email(to, subject, body):
-    msg = MIMEText(body)
+    msg = MIMEText(body.encode('utf-8'), 'plain', 'utf-8')
     msg['Subject'] = "[doneit] %s" % (subject)
     msg['From'] = "doneit@doneit.cs.drexel.edu"
     msg['To'] = to
